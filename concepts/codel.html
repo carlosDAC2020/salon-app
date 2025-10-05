@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>SalonApp Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#13a4ec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101c22",
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="flex min-h-screen">
+<aside class="flex flex-col w-64 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-gray-800">
+<div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-800">
+<h1 class="text-xl font-bold text-gray-800 dark:text-white">SalonApp</h1>
+</div>
+<nav class="flex-1 px-2 py-4 space-y-2">
+<a class="flex items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+          Panel de control
+        </a>
+<a class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">calendar_month</span>
+          Citas
+        </a>
+<a class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+          Clientes
+        </a>
+<a class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">content_cut</span>
+          Servicios
+        </a>
+<a class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">groups</span>
+          Empleados
+        </a>
+<a class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+          Configuración
+        </a>
+</nav>
+</aside>
+<main class="flex-1 p-8">
+<div class="max-w-7xl mx-auto">
+<div class="mb-8">
+<h2 class="text-3xl font-bold text-gray-800 dark:text-white">Panel de control</h2>
+<p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Resumen de la actividad de tu salón.</p>
+</div>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+<div class="bg-white dark:bg-gray-900/50 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400">Citas de hoy</p>
+<p class="mt-2 text-3xl font-bold text-gray-800 dark:text-white">12</p>
+</div>
+<div class="bg-white dark:bg-gray-900/50 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400">Ingresos de esta semana</p>
+<p class="mt-2 text-3xl font-bold text-gray-800 dark:text-white">$1,500</p>
+</div>
+<div class="bg-white dark:bg-gray-900/50 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400">Citas de esta semana</p>
+<p class="mt-2 text-3xl font-bold text-gray-800 dark:text-white">60</p>
+</div>
+</div>
+<div class="mt-10">
+<h3 class="text-xl font-bold text-gray-800 dark:text-white">Rendimiento del equipo</h3>
+<div class="mt-4 bg-white dark:bg-gray-900/50 shadow-sm rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
+<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+<thead class="bg-gray-50 dark:bg-gray-900">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider" scope="col">Empleado</th>
+<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider" scope="col">Citas</th>
+<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider" scope="col">Ingresos</th>
+<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider" scope="col">Valoración</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+<tr>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Elena Ramirez</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">20</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">$750</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">4.8</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Carlos Mendoza</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">18</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">$600</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">4.5</td>
+</tr>
+<tr>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Sofia Vargas</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">22</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">$800</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">4.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

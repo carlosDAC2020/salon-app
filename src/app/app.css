@@ -1,0 +1,23 @@
+/* Importar fuentes y símbolos de Google */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+:host {
+  --primary-color: #13a4ec;
+  --primary-hover: #0f8bc5;
+  --background-color: #f6f7f8;
+  --card-background: #ffffff;
+  --text-primary: #111618;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --input-background: #ffffff;
+
+  /* Sidebar variables */
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --sidebar-hover: #f3f4f6;
+  --active-bg: #e0f2fe;
+  --active-text: #0369a1;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}

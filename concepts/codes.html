@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SalonApp - Registrar Servicio</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "foreground-light": "#111618",
+                        "foreground-dark": "#f6f7f8",
+                        "card-light": "#ffffff",
+                        "card-dark": "#192730",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#2d3748",
+                        "muted-foreground-light": "#6b7280",
+                        "muted-foreground-dark": "#9ca3af",
+                        "input-light": "#ffffff",
+                        "input-dark": "#1f2937",
+                        "ring-light": "#13a4ec",
+                        "ring-dark": "#13a4ec",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .dark .form-select {
+             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark">
+<div class="flex flex-col min-h-screen">
+<header class="bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark sticky top-0 z-10">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-4">
+<div class="text-primary size-7">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold">SalonApp</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+<a class="text-muted-foreground-light dark:text-muted-foreground-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Inicio</a>
+<a class="text-primary font-semibold" href="#">Citas</a>
+<a class="text-muted-foreground-light dark:text-muted-foreground-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Clientes</a>
+<a class="text-muted-foreground-light dark:text-muted-foreground-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Servicios</a>
+<a class="text-muted-foreground-light dark:text-muted-foreground-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Productos</a>
+<a class="text-muted-foreground-light dark:text-muted-foreground-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">Reportes</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="md:hidden text-muted-foreground-light dark:text-muted-foreground-dark">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCAm13rWuCEosrr4FclEEkBqGqeBDRLAydUhsm_rX6uWzQXj2IocGH3DH_yG9SdhOQW43nrQm0V16UGeefv_RPQUanqtbgYCasOudLzAbuqiB4OyBy16rImYCengGB_UqCkzb0j3tlzjTkl7Ximz7NMhwAEJY-S5KQXQOfXL0IPE5nl8z7UnogIK0TBRbVJv4hw-luFUAdRg8lAa676ydVippOynAZFpCIrwt4JB4737fsJ28VdtiAkWbqtk0qSX1CJFjOOsS38VkA");'></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-2xl mx-auto">
+<div class="mb-8">
+<h2 class="text-3xl font-extrabold tracking-tight">Registrar Servicio Realizado</h2>
+<p class="mt-2 text-muted-foreground-light dark:text-muted-foreground-dark">Completa el formulario para registrar un nuevo servicio prestado a un cliente.</p>
+</div>
+<div class="bg-card-light dark:bg-card-dark p-6 sm:p-8 rounded-lg shadow-sm">
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2" for="hairdresser">Peluquero</label>
+<select class="form-select w-full h-11 px-3 rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition" id="hairdresser" name="hairdresser">
+<option>Seleccionar peluquero</option>
+<option>Ana López</option>
+<option>Carlos García</option>
+<option>María Rodríguez</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2" for="service">Servicio</label>
+<select class="form-select w-full h-11 px-3 rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition" id="service" name="service">
+<option>Seleccionar servicio</option>
+<option>Corte de Dama</option>
+<option>Corte de Caballero</option>
+<option>Tinte Completo</option>
+<option>Manicura</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2" for="client">Cliente</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-light dark:text-muted-foreground-dark">search</span>
+<input class="w-full h-11 pl-10 pr-3 rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition" id="client" name="client" placeholder="Buscar cliente por nombre o teléfono" type="text"/>
+</div>
+<button class="mt-2 text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-base">add</span>
+                                Añadir nuevo cliente
+                            </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2" for="cost">Costo</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-muted-foreground-light dark:text-muted-foreground-dark">$</span>
+<input class="w-full h-11 pl-7 pr-3 rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition" id="cost" name="cost" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2" for="datetime">Fecha y Hora</label>
+<input class="w-full h-11 px-3 rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition" id="datetime" name="datetime" type="datetime-local"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2" for="products">Productos Utilizados (Opcional)</label>
+<select class="w-full rounded-DEFAULT border border-border-light dark:border-border-dark bg-input-light dark:bg-input-dark focus:ring-2 focus:ring-ring-light dark:focus:ring-ring-dark focus:outline-none transition p-2" id="products" multiple="" name="products">
+<option>Shampoo Hidratante Pro</option>
+<option>Acondicionador Reparador</option>
+<option>Cera Moldeadora Fijación Fuerte</option>
+<option>Aceite de Argán</option>
+</select>
+<p class="mt-1 text-xs text-muted-foreground-light dark:text-muted-foreground-dark">Mantén presionado Ctrl (o Cmd en Mac) para seleccionar varios.</p>
+</div>
+<div class="flex justify-end pt-4">
+<button class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary transition-all duration-200 flex items-center gap-2" type="submit">
+<span class="material-symbols-outlined">save</span>
+                                Guardar Registro
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

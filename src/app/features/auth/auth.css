@@ -1,0 +1,155 @@
+/* --- FIX: Reseteo Básico para Eliminar Bordes Blancos --- */
+/* Esto elimina el margen por defecto del navegador */
+:host {
+    display: block; /* Asegura que el componente ocupe el espacio */
+    height: 100vh; /* Opcional pero recomendado */
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  
+  /* --- Contenedor principal de dos columnas --- */
+  .split-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  
+  /* --- Panel de la Imagen (Izquierda) --- */
+  .image-panel {
+    background-image: url('../../../../public/login-tarjet.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem; /* Un padding ligeramente ajustado */
+  }
+  
+  .image-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* Capa oscura sutil */
+    z-index: 1;
+  }
+  
+  .image-overlay {
+    position: relative;
+    z-index: 2;
+    color: white;
+  }
+  
+  .welcome-text h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .welcome-text p {
+    font-size: 1.1rem;
+    max-width: 450px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* --- Panel del Formulario (Derecha) --- */
+  .form-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    /* --- FIX: Degradado Lineal Más Notable --- */
+    /* Va de un gris claro en la parte superior a blanco en la mitad */
+    background: linear-gradient(180deg, #f9fafb 0%, #ffffff 50%);
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 420px;
+    background: transparent;
+  }
+  
+  /* --- Resto de los estilos (sin cambios) --- */
+  .card-header { text-align: center; margin-bottom: 2rem; }
+  .app-logo { display: flex; align-items: center; justify-content: center; gap: 0.6rem; color: var(--primary-color); margin-bottom: 1.5rem; }
+  .app-logo svg { width: 1.75rem; height: 1.75rem; }
+  .app-logo span { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+  .card-header h2 { font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .card-header p { color: var(--text-secondary); font-size: 0.95rem; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label { display: block; font-weight: 600; color: var(--text-primary); font-size: 0.875rem; margin-bottom: 0.5rem; }
+  .label-row { display: flex; justify-content: space-between; align-items: center; }
+  .forgot-password { font-size: 0.8rem; color: var(--primary-color); text-decoration: none; font-weight: 600; }
+  .forgot-password:hover { text-decoration: underline; }
+  .input-wrapper { position: relative; }
+  .input-wrapper .material-symbols-outlined { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 1.25rem; }
+  .input-wrapper input { width: 100%; padding: 0.75rem 0.75rem 0.75rem 2.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background-color: var(--input-background); font-size: 0.95rem; color: var(--text-primary); transition: border-color 0.2s, box-shadow 0.2s; }
+  .input-wrapper input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(19, 164, 236, 0.15); }
+  .btn-submit { display: flex; justify-content: center; align-items: center; width: 100%; padding: 0.8rem 1rem; background-color: var(--primary-color); color: white; border: none; border-radius: 0.5rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 1rem; transition: background-color 0.2s; }
+  .card-footer { text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--text-secondary); }
+  .card-footer a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
+  .card-footer a:hover { text-decoration: underline; }
+  
+  
+  /* --- Responsividad para dispositivos móviles --- */
+  @media (max-width: 992px) {
+    .split-container {
+      grid-template-columns: 1fr;
+    }
+  
+    .image-panel {
+      display: none;
+    }
+  
+    .form-panel {
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .login-card {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .form-panel {
+      padding: 0.5rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .card-header p {
+      font-size: 0.875rem;
+    }
+
+    .app-logo svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .app-logo span {
+      font-size: 1.25rem;
+    }
+
+    .input-wrapper input {
+      font-size: 0.875rem;
+      padding: 0.625rem 0.625rem 0.625rem 2.5rem;
+    }
+
+    .btn-submit {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }

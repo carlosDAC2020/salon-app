@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SalonApp - Peluqueros</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13a4ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101c22",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans"]
+            },
+            borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex min-h-screen">
+<aside class="w-64 bg-background-light dark:bg-background-dark p-6 flex flex-col justify-between border-r border-primary/20 dark:border-primary/30">
+<div>
+<h1 class="text-2xl font-bold text-primary mb-10">SalonApp</h1>
+<nav class="flex flex-col space-y-2">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Panel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span>Citas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Clientes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg bg-primary/20 dark:bg-primary/30 text-primary font-bold" href="#">
+<span class="material-symbols-outlined">groups_3</span>
+<span>Peluqueros</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">content_cut</span>
+<span>Servicios</span>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqH03hGEhA4Am0AqzUOtuJJcH96c7tCYKNYrnDzkue4pviyRVAhS-6GNLbrWD55yNZWtKN26asJ9z07vmu97N0uGAp4CByByBBOkWVizwZoOGgk_cNWElNy4r8xbE4j7v9b2htZyDisrwPdWn-e3aoksTisI9vucbZBzVX97vnfycvK2syz4ctJ4MO8kmlZXf-ozg5g0lysXY4RCcSw4raxhDg8AVQRpIs3eIeAXNppgw9_y0R15ZLmJztqhB5eYxmaPbVlRS0cKA"/>
+<div>
+<p class="font-bold text-gray-800 dark:text-white">Admin</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Administrador</p>
+</div>
+</div>
+</aside>
+<main class="flex-1 p-8">
+<header class="flex justify-between items-center mb-8">
+<h2 class="text-4xl font-bold text-gray-800 dark:text-white">Peluqueros</h2>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
+<span class="material-symbols-outlined">add</span>
+<span>Añadir peluquero</span>
+</button>
+</header>
+<div class="mb-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">search</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" placeholder="Buscar peluquero..." type="text"/>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-gray-50 dark:bg-gray-900/20">
+<tr>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Nombre</th>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Servicios</th>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Horario</th>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Tarifa</th>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Comisión</th>
+<th class="p-4 font-bold text-gray-600 dark:text-gray-300">Acciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-gray-200 dark:border-gray-700">
+<td class="p-4 align-top">
+<div class="flex items-center gap-3">
+<img alt="Elena Ramirez" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBorS_9Gcu4pxbhChqi4zat1sf-qFqAMnT8gs2yTj4doG2cNbwLCAfLRJDdof64dyZHf7vcbqnC5M5K7wubQt-obOb-QVPm_HJ4UHkoASo4lSc6kKk0apH1dlKfMTUI66oC73yN6qX616wLenINmY98IHVClADwlfDNif1aHa3HvqVOer6a9cCw1EfzfgeFEqWQE6mVnO7TDukBCVurk1nIeNmUWo6AftCVVgzfI4p8_hN6QH517KpqUPnvoET5youGFrtMpDNROow"/>
+<p class="font-semibold text-gray-800 dark:text-white">Elena Ramirez</p>
+</div>
+</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">Corte, Color, Peinado</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">L-V 9-18</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">50€/hora</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">20%</td>
+<td class="p-4 align-top">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 dark:text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200 dark:border-gray-700">
+<td class="p-4 align-top">
+<div class="flex items-center gap-3">
+<img alt="Carlos Mendoza" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB7ixEH0Jj8NjkOSbfS6eotQ7Z2AakE2pLEzcBnnXveWB_vrgYHfUfDSj1WKSIvERSBY8Qqy8GyaFX68V-o4Qa0JUsTtZep6-jIp9tw36eQZSM3DdeEH4pWf_myWHIaO4cPhzj26EKSctyyuQgUBL6D8fZYm_3fDFZeZ6x_Q-mVsEpuK3IrXQdqsIvTstXF8xHczL5dOEWlWZJwEXa32CE50RQC8fqyLbND3tZeIdQPb6cCfVj0kVue221YG4a4jlJ9TaN_fvedrg"/>
+<p class="font-semibold text-gray-800 dark:text-white">Carlos Mendoza</p>
+</div>
+</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">Corte, Barba, Tratamientos</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">M-S 10-19</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">45€/hora</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">15%</td>
+<td class="p-4 align-top">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 dark:text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200 dark:border-gray-700">
+<td class="p-4 align-top">
+<div class="flex items-center gap-3">
+<img alt="Sofia Herrera" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHXvYSUXUJNfjfRPCP6Oejg_5832t-dEH2F1pZcnAIq6o_5nER7gqXpLTRBgmWZL2l4_Tcl-uAH2VaQX3oDkX85CfBoEmgqt3FGAdJrM7iWL5oevgVhXKkwlERuxCzE4cqrK5MjanvkPCqIeunWQhjQ1rFknAxp0vRK64lij9ffi9rvh0LG-sBH9DLywst6skslZQLvcR8kPFbozcINnyiIdQ4K_-WvIKWcKneL3dgjYS_wBCXcIt6LxF-OoE-BM7bIHbjP2QTCVE"/>
+<p class="font-semibold text-gray-800 dark:text-white">Sofia Herrera</p>
+</div>
+</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">Corte, Color, Extensiones</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">L-S 9-20</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">60€/hora</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">25%</td>
+<td class="p-4 align-top">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 dark:text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200 dark:border-gray-700">
+<td class="p-4 align-top">
+<div class="flex items-center gap-3">
+<img alt="Javier Torres" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDavdycUiNfJuB-PnNMWgUI3QKFj7-TJKsHL-wViiZ29slaxpyrQmPRZwmYwhZCPcUg9e-DC6Uybw3zXYs61PpTMXVXRbF4vjD7mUVh5UYJEPNSUuxbH_Cyy3TUZ35KnXvvP4d_7DQ37TQ7LNGd7YtYKFrbhMxevII19sJYnrQOWmNCoy3DoSJz7Dsin1V__5gEhWv5JC30eAF9mTkKu0gcMSsey-E9k6cKN3GmClWo09JavFN_ZZqAkmeTpq05gxZkIcciN_QyEnw"/>
+<p class="font-semibold text-gray-800 dark:text-white">Javier Torres</p>
+</div>
+</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">Corte, Peinado, Maquillaje</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">M-V 11-20</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">55€/hora</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">20%</td>
+<td class="p-4 align-top">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 dark:text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200 dark:border-gray-700">
+<td class="p-4 align-top">
+<div class="flex items-center gap-3">
+<img alt="Lucia Vargas" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeAfcY3dFLEcer8b88F5vuibaKoWQY7mC1S_OflkQ3fwmBcvWIVH6l_elPuihGGRB0enKpjqhGp-Ujt96VyMU7lOfubDdNiiaeQrv_dSf_ldZeX09UnvySRQGmUABmzwpDe3vHmM5e_XWUhIPnu7ohUiAv2KhZIlxMi-cQZxv6hI6Akff-xO1Ze3T1rlYx2KeTqVnjGlxlPM_cTYzCYwPv1F65I3Nel_JLf0Ob2ZEVg4SjWUJDXzf89Ri5TVH7-rmrBsKVLj2FJuk"/>
+<p class="font-semibold text-gray-800 dark:text-white">Lucia Vargas</p>
+</div>
+</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">Corte, Color, Tratamientos</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">L-S 10-19</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">50€/hora</td>
+<td class="p-4 text-gray-500 dark:text-gray-400 align-top">18%</td>
+<td class="p-4 align-top">
+<div class="flex gap-2">
+<button class="p-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 dark:text-gray-400 hover:text-red-500"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

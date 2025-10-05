@@ -1,0 +1,62 @@
+<div class="split-container">
+
+    <!-- Panel Izquierdo: Imagen de Fondo -->
+    <div class="image-panel">
+      <div class="image-overlay">
+        <div class="welcome-text">
+          <h1>Transforma la gestión de tu salón</h1>
+          <p>Todas tus herramientas en un solo lugar. Simple, intuitivo y potente.</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Panel Derecho: Formulario de Inicio de Sesión -->
+    <div class="form-panel">
+      <div class="login-card">
+  
+        <!-- Encabezado con Logo -->
+        <div class="card-header">
+          <div class="app-logo">
+            <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
+            </svg>
+          </div>
+          <h2>Bienvenido a SalonApp</h2>
+          <p>Ingresa tus credenciales para acceder.</p>
+        </div>
+  
+        <!-- Formulario -->
+        <form class="login-form">
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">mail</span>
+              <input id="email" type="email" placeholder="tu@email.com" required>
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <div class="label-row">
+              <label for="password">Contraseña</label>
+              <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">lock</span>
+              <input id="password" type="password" placeholder="••••••••" required>
+            </div>
+          </div>
+  
+          <button (click)="onLogin($event)" type="submit" class="btn-submit">
+            Ingresar
+          </button>
+        </form>
+  
+        <!-- Pie de página -->
+        <div class="card-footer">
+          <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>

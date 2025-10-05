@@ -1,0 +1,117 @@
+/* --- Contenedor principal que centra la tarjeta --- */
+.development-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+  width: 100%;
+}
+  
+  /* --- La tarjeta que contiene el mensaje --- */
+  .content-wrapper {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    padding: 3rem;
+    text-align: center;
+    max-width: 550px;
+    width: 100%;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  }
+  
+  /* --- Estilo del Icono --- */
+  .icon-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  
+  .icon-wrapper .material-symbols-outlined {
+    font-size: 3.5rem; /* Ícono grande y visible */
+    color: var(--primary-color);
+  }
+  
+  /* --- Estilos de la Tipografía --- */
+  .content-wrapper h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  
+  .content-wrapper p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  /* --- Estilo del Botón de Regreso --- */
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.2s;
+    border: none;
+  }
+  
+  .btn-back:hover {
+    background-color: #0f8bc5; /* Un tono de azul ligeramente más oscuro */
+    transform: translateY(-2px); /* Efecto sutil al pasar el ratón */
+  }
+  
+  .btn-back .material-symbols-outlined {
+    font-size: 1.25rem;
+  }
+
+/* --- Responsive para móviles --- */
+@media (max-width: 768px) {
+  .development-container {
+    padding: 1.5rem 1rem;
+    min-height: calc(100vh - 60px); /* Resta la altura del header móvil */
+  }
+
+  .content-wrapper {
+    padding: 2rem 1.5rem;
+  }
+
+  .content-wrapper h2 {
+    font-size: 1.75rem;
+  }
+
+  .icon-wrapper .material-symbols-outlined {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .development-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .content-wrapper {
+    padding: 1.5rem 1rem;
+  }
+
+  .content-wrapper h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-wrapper p {
+    font-size: 0.9375rem;
+  }
+
+  .icon-wrapper .material-symbols-outlined {
+    font-size: 2.5rem;
+  }
+
+  .btn-back {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}

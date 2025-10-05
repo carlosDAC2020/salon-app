@@ -1,0 +1,106 @@
+<aside class="sidebar" [class.open]="sidebarOpen()">
+    <!-- Encabezado del Sidebar con el Logo -->
+    <div class="sidebar-header">
+      <a href="#" class="logo">
+        <span class="logo-icon material-symbols-outlined">auto_awesome</span>
+        <h1 class="logo-text">SalonApp</h1>
+      </a>
+    </div>
+  
+    <!-- Menú de Navegación -->
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <span class="nav-section-title">MENÚ PRINCIPAL</span>
+        <ul>
+          <li>
+            <a routerLink="/home/dashboard" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">dashboard</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/citas" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">calendar_month</span>
+              <span>Citas</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/clientes" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">group</span>
+              <span>Clientes</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/servicios" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">content_cut</span>
+              <span>Servicios</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/home/empleados" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">badge</span>
+              <span>Empleados</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-title">ANÁLISIS</span>
+        <ul>
+          <li>
+            <a routerLink="/home/reportes" routerLinkActive="active">
+              <span class="icon material-symbols-outlined">analytics</span>
+              <span>Reportes</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Footer del Sidebar con Opciones de Usuario -->
+    <div class="sidebar-footer">
+      <div class="user-menu">
+        <div class="user-info">
+          <div class="user-avatar">
+            <span class="material-symbols-outlined">account_circle</span>
+          </div>
+          <div class="user-details">
+            <span class="user-name">Carlos Agamez</span>
+            <span class="user-role">Administrador</span>
+          </div>
+        </div>
+        <button class="user-menu-btn" title="Opciones de usuario">
+          <span class="material-symbols-outlined">more_vert</span>
+        </button>
+      </div>
+      
+      <div class="footer-actions">
+        <button class="footer-btn" title="Configuración">
+          <span class="material-symbols-outlined">settings</span>
+        </button>
+        <button class="footer-btn" title="Ayuda">
+          <span class="material-symbols-outlined">help</span>
+        </button>
+        <button class="footer-btn logout-btn" title="Cerrar sesión">
+          <span class="material-symbols-outlined">logout</span>
+        </button>
+      </div>
+    </div>
+    
+  </aside>
+  
+  <!-- Overlay para cerrar el sidebar en móvil -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen()" (click)="closeSidebar()"></div>
+
+  <main class="main-content">
+    <!-- Header con botón hamburguesa para móvil -->
+    <header class="mobile-header">
+      <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="Abrir menú">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <h1 class="page-title">SalonApp</h1>
+    </header>
+
+    <router-outlet></router-outlet>
+  </main>
