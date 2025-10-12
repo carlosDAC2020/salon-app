@@ -1,71 +1,170 @@
-# SalonApp
+# SalonApp - Sistema de Gestión para Salones de Belleza
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+Sistema completo de gestión para salones de belleza desarrollado con **Angular 20**. Incluye administración de citas, clientes, empleados, servicios y reportes en tiempo real.
 
-## Development server
+---
 
-To start a local development server, run:
+## Tabla de Contenidos
+
+- [Características](#características)
+- [Instalación](#instalación)
+- [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+- [Documentación del Backend](#documentación-del-backend)
+- [Integración Frontend-Backend](#integración-frontend-backend)
+
+---
+
+## Características
+
+- **Autenticación** - Login/Logout con gestión de sesiones
+- **Dashboard** - Estadísticas en tiempo real, gráficos de ingresos
+- **Gestión de Citas** - CRUD completo con 6 estados
+- **Gestión de Clientes** - Registro, historial, preferencias
+- **Gestión de Empleados** - Perfiles, especialidades, horarios
+- **Gestión de Servicios** - Categorías, precios, duración
+- **Reportes** - Análisis de servicios y clientes
+
+---
+
+## Instalación
+
+### Prerrequisitos
+
+- Node.js 18+
+- npm 9+
+- Angular CLI 20.3.4
+
+### Pasos
 
 ```bash
+# 1. Clonar repositorio
+git clone <url-del-repositorio>
+cd salon-app
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Iniciar servidor de desarrollo
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La aplicación estará en: **http://localhost:4200/**
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Compilar para Producción
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## Arquitectura del Proyecto
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+src/app/
+├── core/                    # Núcleo de la aplicación
+│   ├── models/             # Interfaces TypeScript
+│   ├── services/           # Servicios de datos
+│   └── guards/             # Guards de autenticación
+│
+├── features/               # Módulos de funcionalidades
+│   ├── auth/              # Autenticación
+│   ├── dashboard/         # Panel principal
+│   ├── citas/            # Gestión de citas
+│   ├── clients/          # Gestión de clientes
+│   ├── employees/        # Gestión de empleados
+│   ├── services/         # Gestión de servicios
+│   └── reports/          # Reportes
+│
+└── shared/                # Componentes compartidos
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## Documentación del Backend
+
+Para implementar el backend completo, consulta estas guías detalladas:
+
+### Guías Disponibles
+
+1. **[docs/BACKEND_SETUP.md](./docs/BACKEND_SETUP.md)** 
+   - Configuración inicial (Node.js, Express, MongoDB)
+   - Estructura de carpetas
+   - Variables de entorno
+
+2. **[docs/BACKEND_MODELS.md](./docs/BACKEND_MODELS.md)**
+   - Modelos de datos completos (Mongoose)
+   - Validaciones y relaciones
+   - Índices de base de datos
+
+3. **[docs/BACKEND_API.md](./docs/BACKEND_API.md)**
+   - Endpoints REST completos
+   - Controladores con lógica de negocio
+   - Ejemplos de Request/Response
+
+4. **[docs/BACKEND_AUTH.md](./docs/BACKEND_AUTH.md)**
+   - Implementación de JWT
+   - Middlewares de autenticación
+   - Roles y permisos
+
+5. **[docs/FRONTEND_INTEGRATION.md](./docs/FRONTEND_INTEGRATION.md)**
+   - Integración completa Angular + Backend
+   - HttpClient y servicios
+   - Interceptors y Guards
+
+---
+
+## Integración Frontend-Backend
+
+### Inicio Rápido del Backend
 
 ```bash
-ng e2e
+# Crear proyecto backend
+mkdir salon-app-backend
+cd salon-app-backend
+
+# Inicializar
+npm init -y
+
+# Instalar dependencias
+npm install express mongoose jsonwebtoken bcrypt cors dotenv express-validator
+
+# Ver guía completa en docs/BACKEND_SETUP.md
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Configurar Angular para API
 
-## Additional Resources
+```typescript
+// src/environments/environment.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Ver guía completa:** [docs/FRONTEND_INTEGRATION.md](./docs/FRONTEND_INTEGRATION.md)
 
+---
 
-{
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
+## Estado del Proyecto
+
+- **Frontend:** Completamente funcional con datos mock
+- **Backend:** Por implementar (ver `/docs`)
+- **Integración:** Requiere actualizar servicios
+
+### Próximos Pasos
+
+1. Implementar backend → [BACKEND_SETUP.md](./docs/BACKEND_SETUP.md)
+2. Crear modelos → [BACKEND_MODELS.md](./docs/BACKEND_MODELS.md)
+3. Desarrollar API → [BACKEND_API.md](./docs/BACKEND_API.md)
+4. Integrar frontend → [FRONTEND_INTEGRATION.md](./docs/FRONTEND_INTEGRATION.md)
+
+---
+
+## Licencia
+
+MIT License
+
+---
+
+**Desarrollado con ❤️ por Carlos Agamez**
