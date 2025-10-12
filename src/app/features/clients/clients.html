@@ -1,26 +1,257 @@
-<div class="development-container">
-    <div class="content-wrapper">
-  
-      <!-- Icono representativo -->
-      <div class="icon-wrapper">
-        <span class="material-symbols-outlined">construction</span>
-      </div>
-  
-      <!-- Título principal -->
-      <h2>Próximamente {{SectionName}}</h2>
-  
-      <!-- Mensaje descriptivo -->
-      <p>
-        Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-        <br>
-        ¡Vuelve pronto para descubrir las novedades!
-      </p>
-  
-      <!-- Botón de acción (opcional pero recomendado) -->
-      <a href="/home/dashboard" class="btn-back">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Volver al Dashboard
-      </a>
-  
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <span class="material-symbols-outlined">group</span>
+        Clientes
+      </h1>
+      <p class="subtitle">Gestiona la base de datos de clientes</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-symbols-outlined">person_add</span>
+      Agregar Cliente
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input 
+        type="text" 
+        placeholder="Buscar clientes..." 
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      >
+    </div>
+
+    <div class="filter-group">
+      <label>Estado:</label>
+      <select [(ngModel)]="filterStatus" (ngModelChange)="onStatusChange()">
+        <option value="all">Todos</option>
+        <option value="active">Activos</option>
+        <option value="inactive">Inactivos</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Ordenar por:</label>
+      <select [(ngModel)]="sortBy" (ngModelChange)="onSortChange()">
+        <option value="name">Nombre</option>
+        <option value="visits">Más visitas</option>
+        <option value="spent">Mayor gasto</option>
+        <option value="recent">Última visita</option>
+      </select>
+    </div>
+
+    <div class="results-count">
+      <span>{{filteredClients.length}} clientes</span>
     </div>
   </div>
+
+  <!-- Clients Table -->
+  <div class="table-container">
+    <table class="clients-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Contacto</th>
+          <th>Visitas</th>
+          <th>Total Gastado</th>
+          <th>Última Visita</th>
+          <th>Cliente desde</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of filteredClients">
+          <td>
+            <div class="client-info">
+              <div class="client-avatar">
+                {{client.firstName.charAt(0)}}{{client.lastName.charAt(0)}}
+              </div>
+              <div class="client-details">
+                <span class="client-name">{{getFullName(client)}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="contact-info">
+              <div class="contact-item">
+                <span class="material-symbols-outlined">mail</span>
+                <span>{{client.email}}</span>
+              </div>
+              <div class="contact-item">
+                <span class="material-symbols-outlined">phone</span>
+                <span>{{client.phone}}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="badge badge-info">{{client.totalVisits}} visitas</span>
+          </td>
+          <td>
+            <span class="amount">{{formatCurrency(client.totalSpent)}}</span>
+          </td>
+          <td>{{formatDate(client.lastVisit)}}</td>
+          <td>{{getClientSince(client.registeredAt)}}</td>
+          <td>
+            <span class="status-badge" [class.active]="client.isActive">
+              {{client.isActive ? 'Activo' : 'Inactivo'}}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-icon" (click)="openEditModal(client)" title="Editar">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="btn-icon" (click)="deleteClient(client.id)" title="Eliminar">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredClients.length === 0">
+      <span class="material-symbols-outlined">person_search</span>
+      <h3>No se encontraron clientes</h3>
+      <p>Intenta ajustar los filtros o agrega un nuevo cliente</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{isEditMode ? 'Editar Cliente' : 'Nuevo Cliente'}}</h2>
+      <button class="btn-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form class="modal-body" (ngSubmit)="saveClient()">
+      <!-- Información Personal -->
+      <div class="section-title">Información Personal</div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Nombre *</label>
+          <input 
+            id="firstName" 
+            type="text" 
+            [(ngModel)]="currentClient.firstName" 
+            name="firstName"
+            required
+            placeholder="Nombre"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Apellido *</label>
+          <input 
+            id="lastName" 
+            type="text" 
+            [(ngModel)]="currentClient.lastName" 
+            name="lastName"
+            required
+            placeholder="Apellido"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input 
+            id="email" 
+            type="email" 
+            [(ngModel)]="currentClient.email" 
+            name="email"
+            required
+            placeholder="correo@ejemplo.com"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Teléfono *</label>
+          <input 
+            id="phone" 
+            type="tel" 
+            [(ngModel)]="currentClient.phone" 
+            name="phone"
+            required
+            placeholder="3001234567"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="birthDate">Fecha de Nacimiento</label>
+          <input 
+            id="birthDate" 
+            type="date" 
+            [(ngModel)]="currentClient.birthDate" 
+            name="birthDate"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="currentClient.isActive" 
+              name="isActive"
+            >
+            <span>Cliente activo</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Información Adicional -->
+      <div class="section-title">Información Adicional</div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="address">Dirección</label>
+          <input 
+            id="address" 
+            type="text" 
+            [(ngModel)]="currentClient.address" 
+            name="address"
+            placeholder="Calle 123 #45-67"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="notes">Notas</label>
+          <textarea 
+            id="notes" 
+            [(ngModel)]="currentClient.notes" 
+            name="notes"
+            rows="3"
+            placeholder="Observaciones, preferencias, alergias, etc."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">
+          <span class="material-symbols-outlined">save</span>
+          {{isEditMode ? 'Actualizar' : 'Crear'}} Cliente
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

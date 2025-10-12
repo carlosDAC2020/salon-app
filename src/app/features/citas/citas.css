@@ -1,117 +1,546 @@
-/* --- Contenedor principal que centra la tarjeta --- */
-.development-container {
+/* Page Container */
+.page-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.header-content h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.header-content h1 .material-symbols-outlined {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--sidebar-hover);
+  border-color: var(--text-secondary);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: var(--text-secondary);
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
-  min-height: 100vh;
+}
+
+.btn-icon:hover {
+  background-color: var(--sidebar-hover);
+  color: var(--text-primary);
+}
+
+.btn-icon.danger:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.btn-close:hover {
+  color: var(--text-primary);
+}
+
+/* Filters Section */
+.filters-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box .material-symbols-outlined {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+}
+
+.search-box input {
   width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  background-color: var(--card-background);
+  transition: border-color 0.2s;
 }
-  
-  /* --- La tarjeta que contiene el mensaje --- */
-  .content-wrapper {
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    padding: 3rem;
-    text-align: center;
-    max-width: 550px;
-    width: 100%;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  }
-  
-  /* --- Estilo del Icono --- */
-  .icon-wrapper {
-    margin-bottom: 1.5rem;
-  }
-  
-  .icon-wrapper .material-symbols-outlined {
-    font-size: 3.5rem; /* Ícono grande y visible */
-    color: var(--primary-color);
-  }
-  
-  /* --- Estilos de la Tipografía --- */
-  .content-wrapper h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-  }
-  
-  .content-wrapper p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-  
-  /* --- Estilo del Botón de Regreso --- */
-  .btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: var(--primary-color);
-    color: #ffffff;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.2s;
-    border: none;
-  }
-  
-  .btn-back:hover {
-    background-color: #0f8bc5; /* Un tono de azul ligeramente más oscuro */
-    transform: translateY(-2px); /* Efecto sutil al pasar el ratón */
-  }
-  
-  .btn-back .material-symbols-outlined {
-    font-size: 1.25rem;
-  }
 
-/* --- Responsive para móviles --- */
+.search-box input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--card-background);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.filter-group select:focus,
+.filter-group input[type="date"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.results-count {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Appointments List */
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.appointment-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.appointment-card.today {
+  border-left: 4px solid var(--primary-color);
+  background-color: #f0f9ff;
+}
+
+.appointment-card.past {
+  opacity: 0.6;
+}
+
+/* Card Left - Date & Time */
+.card-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 100px;
+}
+
+.date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  min-width: 70px;
+}
+
+.date-badge .day {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.date-badge .month {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.time-info .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+/* Card Center - Details */
+.card-center {
+  flex: 1;
+}
+
+.appointment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.detail-row .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: var(--primary-color);
+}
+
+.detail-row .label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 80px;
+}
+
+.detail-row .value {
+  color: var(--text-primary);
+}
+
+.detail-row .value.note {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Card Right - Price & Actions */
+.card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  min-width: 150px;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+}
+
+.empty-state .material-symbols-outlined {
+  font-size: 4rem;
+  color: var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: var(--card-background);
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 1.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  background-color: var(--input-background);
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .development-container {
-    padding: 1.5rem 1rem;
-    min-height: calc(100vh - 60px); /* Resta la altura del header móvil */
+  .page-container {
+    padding: 1rem;
   }
 
-  .content-wrapper {
-    padding: 2rem 1.5rem;
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .content-wrapper h2 {
-    font-size: 1.75rem;
-  }
-
-  .icon-wrapper .material-symbols-outlined {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .development-container {
-    padding: 1rem 0.75rem;
-  }
-
-  .content-wrapper {
-    padding: 1.5rem 1rem;
-  }
-
-  .content-wrapper h2 {
+  .header-content h1 {
     font-size: 1.5rem;
   }
 
-  .content-wrapper p {
-    font-size: 0.9375rem;
+  .btn-primary {
+    justify-content: center;
   }
 
-  .icon-wrapper .material-symbols-outlined {
-    font-size: 2.5rem;
+  .filters-section {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .btn-back {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.875rem;
+  .search-box {
+    min-width: 100%;
+  }
+
+  .results-count {
+    margin-left: 0;
+  }
+
+  .appointment-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card-left,
+  .card-right {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .card-right {
+    align-items: flex-start;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .modal-footer .btn-cancel,
+  .modal-footer .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .appointment-card .card-info {
+    flex-wrap: wrap;
+  }
+
+  .appointment-card .info-item {
+    min-width: 45%;
   }
 }

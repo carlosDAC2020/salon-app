@@ -1,26 +1,198 @@
-<div class="development-container">
-    <div class="content-wrapper">
-  
-      <!-- Icono representativo -->
-      <div class="icon-wrapper">
-        <span class="material-symbols-outlined">construction</span>
-      </div>
-  
-      <!-- Título principal -->
-      <h2>Próximamente {{SectionName}}</h2>
-  
-      <!-- Mensaje descriptivo -->
-      <p>
-        Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-        <br>
-        ¡Vuelve pronto para descubrir las novedades!
-      </p>
-  
-      <!-- Botón de acción (opcional pero recomendado) -->
-      <a href="/home/dashboard" class="btn-back">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Volver al Dashboard
-      </a>
-  
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <span class="material-symbols-outlined">spa</span>
+        Servicios
+      </h1>
+      <p class="subtitle">Gestiona el catálogo de servicios de tu salón</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-symbols-outlined">add</span>
+      Agregar Servicio
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input 
+        type="text" 
+        placeholder="Buscar servicios..." 
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      >
+    </div>
+
+    <div class="filter-group">
+      <label>Categoría:</label>
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
+        <option value="all">Todas las categorías</option>
+        <option *ngFor="let cat of categories" [value]="cat.name">{{cat.name}}</option>
+      </select>
+    </div>
+
+    <div class="results-count">
+      <span>{{filteredServices.length}} servicios</span>
     </div>
   </div>
+
+  <!-- Services Grid -->
+  <div class="services-grid">
+    <div class="service-card" *ngFor="let service of filteredServices">
+      <div class="card-header">
+        <div class="service-info">
+          <h3>{{service.name}}</h3>
+          <span class="category-badge">
+            <span class="material-symbols-outlined">{{getCategoryIcon(service.category)}}</span>
+            {{service.category}}
+          </span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon" (click)="openEditModal(service)" title="Editar">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          <button class="btn-icon" (click)="deleteService(service.id)" title="Eliminar">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="service-description">{{service.description}}</p>
+
+      <div class="service-details">
+        <div class="detail-item">
+          <span class="material-symbols-outlined">schedule</span>
+          <span>{{formatDuration(service.duration)}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="material-symbols-outlined">payments</span>
+          <span class="price">{{formatPrice(service.price)}}</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <label class="toggle-switch">
+          <input 
+            type="checkbox" 
+            [checked]="service.isActive"
+            (change)="toggleServiceStatus(service.id)"
+          >
+          <span class="slider"></span>
+        </label>
+        <span class="status-label" [class.active]="service.isActive">
+          {{service.isActive ? 'Activo' : 'Inactivo'}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredServices.length === 0">
+      <span class="material-symbols-outlined">search_off</span>
+      <h3>No se encontraron servicios</h3>
+      <p>Intenta ajustar los filtros o crear un nuevo servicio</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{isEditMode ? 'Editar Servicio' : 'Nuevo Servicio'}}</h2>
+      <button class="btn-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form class="modal-body" (ngSubmit)="saveService()">
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="name">Nombre del Servicio *</label>
+          <input 
+            id="name" 
+            type="text" 
+            [(ngModel)]="currentService.name" 
+            name="name"
+            required
+            placeholder="Ej: Corte de Cabello"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="description">Descripción</label>
+          <textarea 
+            id="description" 
+            [(ngModel)]="currentService.description" 
+            name="description"
+            rows="3"
+            placeholder="Describe el servicio..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category">Categoría *</label>
+          <select id="category" [(ngModel)]="currentService.category" name="category" required>
+            <option value="">Seleccionar categoría</option>
+            <option *ngFor="let cat of categories" [value]="cat.name">{{cat.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Duración (minutos) *</label>
+          <input 
+            id="duration" 
+            type="number" 
+            [(ngModel)]="currentService.duration" 
+            name="duration"
+            min="5"
+            step="5"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Precio (COP) *</label>
+          <input 
+            id="price" 
+            type="number" 
+            [(ngModel)]="currentService.price" 
+            name="price"
+            min="0"
+            step="1000"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="currentService.isActive" 
+              name="isActive"
+            >
+            <span>Servicio activo</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">
+          <span class="material-symbols-outlined">save</span>
+          {{isEditMode ? 'Actualizar' : 'Crear'}} Servicio
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

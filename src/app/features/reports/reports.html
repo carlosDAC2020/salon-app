@@ -1,26 +1,253 @@
-<div class="development-container">
-    <div class="content-wrapper">
-  
-      <!-- Icono representativo -->
-      <div class="icon-wrapper">
-        <span class="material-symbols-outlined">construction</span>
-      </div>
-  
-      <!-- Título principal -->
-      <h2>Próximamente {{SectionName}}</h2>
-  
-      <!-- Mensaje descriptivo -->
-      <p>
-        Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-        <br>
-        ¡Vuelve pronto para descubrir las novedades!
-      </p>
-  
-      <!-- Botón de acción (opcional pero recomendado) -->
-      <a href="/home/dashboard" class="btn-back">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Volver al Dashboard
-      </a>
-  
+<div class="reports-container">
+  <!-- Header -->
+  <div class="reports-header">
+    <div class="header-content">
+      <h1>
+        <span class="material-symbols-outlined">assessment</span>
+        Reportes y Análisis
+      </h1>
+      <p class="subtitle">Estadísticas detalladas del negocio</p>
+    </div>
+    <div class="header-actions">
+      <select class="period-selector" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange()">
+        <option value="3">Últimos 3 meses</option>
+        <option value="6">Últimos 6 meses</option>
+        <option value="12">Último año</option>
+      </select>
+      <button class="btn-secondary" (click)="printReport()">
+        <span class="material-symbols-outlined">print</span>
+        Imprimir
+      </button>
+      <button class="btn-primary" (click)="exportReport()">
+        <span class="material-symbols-outlined">download</span>
+        Exportar
+      </button>
     </div>
   </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon blue">
+        <span class="material-symbols-outlined">payments</span>
+      </div>
+      <div class="summary-content">
+        <p class="summary-label">Ingresos Totales</p>
+        <h2 class="summary-value">{{formatCurrency(totalRevenue)}}</h2>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon green">
+        <span class="material-symbols-outlined">event_available</span>
+      </div>
+      <div class="summary-content">
+        <p class="summary-label">Citas Completadas</p>
+        <h2 class="summary-value">{{totalAppointments}}</h2>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon purple">
+        <span class="material-symbols-outlined">receipt_long</span>
+      </div>
+      <div class="summary-content">
+        <p class="summary-label">Ticket Promedio</p>
+        <h2 class="summary-value">{{formatCurrency(averageTicket)}}</h2>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon orange">
+        <span class="material-symbols-outlined">group</span>
+      </div>
+      <div class="summary-content">
+        <p class="summary-label">Clientes Activos</p>
+        <h2 class="summary-value">{{clientReport?.activeClients || 0}}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Grid -->
+  <div class="charts-grid">
+    <!-- Monthly Revenue Chart -->
+    <div class="report-card chart-card-full">
+      <div class="card-header">
+        <h3>Ingresos Mensuales</h3>
+        <span class="material-symbols-outlined">trending_up</span>
+      </div>
+      <div class="chart-container">
+        <div class="revenue-chart">
+          <div class="chart-bar" *ngFor="let data of monthlyRevenue">
+            <div class="bar-wrapper">
+              <div class="bar-fill" 
+                   [style.height.%]="getRevenuePercentage(data.revenue)"
+                   [title]="formatCurrency(data.revenue)">
+                <span class="bar-value">{{formatCurrency(data.revenue)}}</span>
+              </div>
+            </div>
+            <div class="bar-info">
+              <span class="bar-label">{{data.month}}</span>
+              <span class="bar-sublabel">{{data.appointments}} citas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue by Category -->
+    <div class="report-card">
+      <div class="card-header">
+        <h3>Ingresos por Categoría</h3>
+        <span class="material-symbols-outlined">pie_chart</span>
+      </div>
+      <div class="category-list">
+        <div class="category-item" *ngFor="let category of revenueByCategory; let i = index">
+          <div class="category-info">
+            <div class="category-dot" [style.background-color]="getCategoryColor(i)"></div>
+            <span class="category-name">{{category.category}}</span>
+          </div>
+          <div class="category-stats">
+            <span class="category-revenue">{{formatCurrency(category.revenue)}}</span>
+            <span class="category-percentage">{{category.percentage | number:'1.0-1'}}%</span>
+          </div>
+          <div class="category-bar">
+            <div class="category-fill" 
+                 [style.width.%]="category.percentage"
+                 [style.background-color]="getCategoryColor(i)">
+            </div>
+          </div>
+        </div>
+        <div class="empty-message" *ngIf="revenueByCategory.length === 0">
+          <span class="material-symbols-outlined">info</span>
+          <p>No hay datos de categorías</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appointment Status Distribution -->
+    <div class="report-card">
+      <div class="card-header">
+        <h3>Estado de Citas</h3>
+        <span class="material-symbols-outlined">donut_small</span>
+      </div>
+      <div class="status-list">
+        <div class="status-item" *ngFor="let item of appointmentStatusDistribution">
+          <div class="status-info">
+            <div class="status-dot" [style.background-color]="getStatusColor(item.status)"></div>
+            <span class="status-name">{{getStatusLabel(item.status)}}</span>
+          </div>
+          <div class="status-stats">
+            <span class="status-count">{{item.count}}</span>
+            <span class="status-percentage">{{item.percentage | number:'1.0-1'}}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee Performance -->
+  <div class="report-card">
+    <div class="card-header">
+      <h3>Desempeño por Empleado</h3>
+      <span class="material-symbols-outlined">leaderboard</span>
+    </div>
+    <div class="table-container">
+      <table class="performance-table">
+        <thead>
+          <tr>
+            <th>Empleado</th>
+            <th>Citas</th>
+            <th>Ingresos</th>
+            <th>Tasa Completado</th>
+            <th>Rendimiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employeePerformance">
+            <td>
+              <div class="employee-cell">
+                <div class="employee-avatar">
+                  {{employee.name.split(' ')[0].charAt(0)}}{{employee.name.split(' ')[1]?.charAt(0) || ''}}
+                </div>
+                <span class="employee-name">{{employee.name}}</span>
+              </div>
+            </td>
+            <td>{{employee.appointments}}</td>
+            <td class="revenue-cell">{{formatCurrency(employee.revenue)}}</td>
+            <td>
+              <span class="completion-rate" [class.high]="employee.completionRate >= 80">
+                {{employee.completionRate | number:'1.0-1'}}%
+              </span>
+            </td>
+            <td>
+              <div class="performance-bar">
+                <div class="performance-fill" 
+                     [style.width.%]="getEmployeeRevenuePercentage(employee.revenue)">
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-message" *ngIf="employeePerformance.length === 0">
+        <span class="material-symbols-outlined">info</span>
+        <p>No hay datos de empleados</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Reports -->
+  <div class="report-card">
+    <div class="card-header">
+      <h3>Análisis de Servicios</h3>
+      <span class="material-symbols-outlined">spa</span>
+    </div>
+    <div class="table-container">
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Total Citas</th>
+            <th>Ingresos</th>
+            <th>Precio Promedio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of serviceReports">
+            <td class="service-name-cell">{{service.name}}</td>
+            <td>{{service.totalAppointments}}</td>
+            <td class="revenue-cell">{{formatCurrency(service.revenue)}}</td>
+            <td>{{formatCurrency(service.averagePrice)}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-message" *ngIf="serviceReports.length === 0">
+        <span class="material-symbols-outlined">info</span>
+        <p>No hay datos de servicios</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Clients -->
+  <div class="report-card">
+    <div class="card-header">
+      <h3>Top 10 Clientes</h3>
+      <span class="material-symbols-outlined">stars</span>
+    </div>
+    <div class="top-clients-list">
+      <div class="client-row" *ngFor="let client of clientReport?.topClients; let i = index">
+        <div class="client-rank">{{i + 1}}</div>
+        <div class="client-info">
+          <span class="client-name">{{client.name}}</span>
+          <span class="client-visits">{{client.visits}} visitas</span>
+        </div>
+        <div class="client-spent">{{formatCurrency(client.spent)}}</div>
+      </div>
+      <div class="empty-message" *ngIf="!clientReport || clientReport.topClients.length === 0">
+        <span class="material-symbols-outlined">info</span>
+        <p>No hay datos de clientes</p>
+      </div>
+    </div>
+  </div>
+</div>

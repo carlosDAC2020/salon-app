@@ -1,26 +1,262 @@
-<div class="development-container">
-    <div class="content-wrapper">
-  
-      <!-- Icono representativo -->
-      <div class="icon-wrapper">
-        <span class="material-symbols-outlined">construction</span>
-      </div>
-  
-      <!-- Título principal -->
-      <h2>Próximamente {{SectionName}}</h2>
-  
-      <!-- Mensaje descriptivo -->
-      <p>
-        Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-        <br>
-        ¡Vuelve pronto para descubrir las novedades!
-      </p>
-  
-      <!-- Botón de acción (opcional pero recomendado) -->
-      <a href="/home/dashboard" class="btn-back">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Volver al Dashboard
-      </a>
-  
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <span class="material-symbols-outlined">badge</span>
+        Empleados
+      </h1>
+      <p class="subtitle">Gestiona el equipo de Trabajo de tu salón</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-symbols-outlined">person_add</span>
+      Agregar Empleado
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input 
+        type="text" 
+        placeholder="Buscar empleados..." 
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      >
+    </div>
+
+    <div class="filter-group">
+      <label>Estado:</label>
+      <select [(ngModel)]="filterStatus" (ngModelChange)="onStatusChange()">
+        <option value="all">Todos</option>
+        <option value="active">Activos</option>
+        <option value="inactive">Inactivos</option>
+      </select>
+    </div>
+
+    <div class="results-count">
+      <span>{{filteredEmployees.length}} empleados</span>
     </div>
   </div>
+
+  <!-- Employees Grid -->
+  <div class="employees-grid">
+    <div class="employee-card" *ngFor="let employee of filteredEmployees">
+      <div class="card-header">
+        <div class="employee-avatar">
+          <img [src]="employee.photoUrl || 'https://i.pravatar.cc/150?img=68'" [alt]="getFullName(employee)">
+          <span class="status-indicator" [class.active]="employee.isActive"></span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon" (click)="openEditModal(employee)" title="Editar">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          <button class="btn-icon" (click)="deleteEmployee(employee.id)" title="Eliminar">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="employee-info">
+        <h3>{{getFullName(employee)}}</h3>
+        <p class="position">{{employee.position}}</p>
+        
+        <div class="info-items">
+          <div class="info-item">
+            <span class="material-symbols-outlined">mail</span>
+            <span>{{employee.email}}</span>
+          </div>
+          <div class="info-item">
+            <span class="material-symbols-outlined">phone</span>
+            <span>{{employee.phone}}</span>
+          </div>
+          <div class="info-item">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span>{{getYearsOfService(employee.hireDate)}} años de servicio</span>
+          </div>
+        </div>
+
+        <div class="specialties-section">
+          <h4>Especialidades:</h4>
+          <div class="specialties-tags">
+            <span class="specialty-tag" *ngFor="let specialty of employee.specialties">
+              {{getServiceNames([specialty])}}
+            </span>
+            <span class="specialty-tag empty" *ngIf="employee.specialties.length === 0">
+              Sin especialidades
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <label class="toggle-switch">
+          <input 
+            type="checkbox" 
+            [checked]="employee.isActive"
+            (change)="toggleEmployeeStatus(employee.id)"
+          >
+          <span class="slider"></span>
+        </label>
+        <span class="status-label" [class.active]="employee.isActive">
+          {{employee.isActive ? 'Activo' : 'Inactivo'}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredEmployees.length === 0">
+      <span class="material-symbols-outlined">person_off</span>
+      <h3>No se encontraron empleados</h3>
+      <p>Intenta ajustar los filtros o agrega un nuevo empleado</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{isEditMode ? 'Editar Empleado' : 'Nuevo Empleado'}}</h2>
+      <button class="btn-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form class="modal-body" (ngSubmit)="saveEmployee()">
+      <!-- Información Personal -->
+      <div class="section-title">Información Personal</div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Nombre *</label>
+          <input 
+            id="firstName" 
+            type="text" 
+            [(ngModel)]="currentEmployee.firstName" 
+            name="firstName"
+            required
+            placeholder="Nombre"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Apellido *</label>
+          <input 
+            id="lastName" 
+            type="text" 
+            [(ngModel)]="currentEmployee.lastName" 
+            name="lastName"
+            required
+            placeholder="Apellido"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input 
+            id="email" 
+            type="email" 
+            [(ngModel)]="currentEmployee.email" 
+            name="email"
+            required
+            placeholder="correo@ejemplo.com"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Teléfono *</label>
+          <input 
+            id="phone" 
+            type="tel" 
+            [(ngModel)]="currentEmployee.phone" 
+            name="phone"
+            required
+            placeholder="3001234567"
+          >
+        </div>
+      </div>
+
+      <!-- Información Laboral -->
+      <div class="section-title">Información Laboral</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="position">Cargo *</label>
+          <input 
+            id="position" 
+            type="text" 
+            [(ngModel)]="currentEmployee.position" 
+            name="position"
+            required
+            placeholder="Ej: Estilista Senior"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="hireDate">Fecha de Contratación *</label>
+          <input 
+            id="hireDate" 
+            type="date" 
+            [(ngModel)]="currentEmployee.hireDate" 
+            name="hireDate"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="photoUrl">URL de Foto</label>
+          <input 
+            id="photoUrl" 
+            type="url" 
+            [(ngModel)]="currentEmployee.photoUrl" 
+            name="photoUrl"
+            placeholder="https://ejemplo.com/foto.jpg"
+          >
+        </div>
+      </div>
+
+      <!-- Especialidades -->
+      <div class="section-title">Especialidades</div>
+      <div class="specialties-grid">
+        <label class="specialty-checkbox" *ngFor="let service of availableServices">
+          <input 
+            type="checkbox" 
+            [checked]="isSpecialtySelected(service.id)"
+            (change)="toggleSpecialty(service.id)"
+          >
+          <span>{{service.name}}</span>
+        </label>
+      </div>
+
+      <!-- Estado -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="currentEmployee.isActive" 
+              name="isActive"
+            >
+            <span>Empleado activo</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">
+          <span class="material-symbols-outlined">save</span>
+          {{isEditMode ? 'Actualizar' : 'Crear'}} Empleado
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,26 +1,202 @@
-<div class="development-container">
-    <div class="content-wrapper">
-  
-      <!-- Icono representativo -->
-      <div class="icon-wrapper">
-        <span class="material-symbols-outlined">construction</span>
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="subtitle">Resumen general de tu salón</p>
+    </div>
+    <div class="header-date">
+      <span class="material-symbols-outlined">today</span>
+      <span>{{revenueData.length > 0 ? revenueData[revenueData.length - 1].date : 'Hoy'}}</span>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <span class="material-symbols-outlined">event</span>
       </div>
-  
-      <!-- Título principal -->
-      <h2>Próximamente {{SectionName}}</h2>
-  
-      <!-- Mensaje descriptivo -->
-      <p>
-        Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-        <br>
-        ¡Vuelve pronto para descubrir las novedades!
-      </p>
-  
-      <!-- Botón de acción (opcional pero recomendado) -->
-      <a href="/home/dashboard" class="btn-back">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Volver al Dashboard
+      <div class="stat-content">
+        <p class="stat-label">Citas Hoy</p>
+        <h2 class="stat-value">{{stats.todayAppointments}}</h2>
+        <p class="stat-detail">{{stats.completedToday}} completadas</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <span class="material-symbols-outlined">payments</span>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Ingresos Hoy</p>
+        <h2 class="stat-value">{{formatCurrency(stats.todayRevenue)}}</h2>
+        <p class="stat-detail" [class.positive]="isGrowthPositive()" [class.negative]="!isGrowthPositive()">
+          <span class="material-symbols-outlined">{{isGrowthPositive() ? 'trending_up' : 'trending_down'}}</span>
+          {{getGrowthPercentage() | number:'1.0-1'}}% vs ayer
+        </p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <span class="material-symbols-outlined">account_balance_wallet</span>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Ingresos del Mes</p>
+        <h2 class="stat-value">{{formatCurrency(stats.monthRevenue)}}</h2>
+        <p class="stat-detail">Total acumulado</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <span class="material-symbols-outlined">group</span>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Clientes Activos</p>
+        <h2 class="stat-value">{{stats.activeClients}}</h2>
+        <p class="stat-detail">{{stats.pendingAppointments}} citas pendientes</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Revenue Chart -->
+    <div class="dashboard-card chart-card">
+      <div class="card-header">
+        <h3>Ingresos Últimos 7 Días</h3>
+        <span class="material-symbols-outlined">show_chart</span>
+      </div>
+      <div class="chart-container">
+        <div class="chart-bars">
+          <div class="chart-bar" *ngFor="let data of revenueData">
+            <div class="bar-wrapper">
+              <div class="bar-fill" 
+                   [style.height.%]="getRevenuePercentage(data.amount)"
+                   [title]="formatCurrency(data.amount)">
+                <span class="bar-value">{{formatCurrency(data.amount)}}</span>
+              </div>
+            </div>
+            <span class="bar-label">{{data.date}}</span>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-dot"></span>
+            Ingresos diarios
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Services -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Servicios Más Solicitados</h3>
+        <span class="material-symbols-outlined">star</span>
+      </div>
+      <div class="services-list">
+        <div class="service-item" *ngFor="let service of topServices; let i = index">
+          <div class="service-rank">{{i + 1}}</div>
+          <div class="service-info">
+            <p class="service-name">{{service.name}}</p>
+            <p class="service-stats">{{service.count}} veces - {{formatCurrency(service.revenue)}}</p>
+          </div>
+          <div class="service-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="(service.count / topServices[0].count) * 100">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="empty-message" *ngIf="topServices.length === 0">
+          <span class="material-symbols-outlined">info</span>
+          <p>No hay datos de servicios completados</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Próximas Citas</h3>
+        <a routerLink="/home/citas" class="view-all">Ver todas</a>
+      </div>
+      <div class="appointments-list">
+        <div class="appointment-item" *ngFor="let appointment of upcomingAppointments">
+          <div class="appointment-time">
+            <span class="time">{{appointment.startTime}}</span>
+            <span class="date">{{appointment.date | date:'dd MMM'}}</span>
+          </div>
+          <div class="appointment-details">
+            <p class="client-name">{{appointment.clientName}}</p>
+            <p class="service-name">{{appointment.serviceName}}</p>
+          </div>
+          <div class="appointment-employee">
+            <span class="material-symbols-outlined">badge</span>
+            <span>{{appointment.employeeName}}</span>
+          </div>
+        </div>
+        <div class="empty-message" *ngIf="upcomingAppointments.length === 0">
+          <span class="material-symbols-outlined">event_available</span>
+          <p>No hay citas próximas programadas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Clients -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Clientes Recientes</h3>
+        <a routerLink="/home/clientes" class="view-all">Ver todos</a>
+      </div>
+      <div class="clients-list">
+        <div class="client-item" *ngFor="let client of recentClients">
+          <div class="client-avatar">
+            {{client.firstName.charAt(0)}}{{client.lastName.charAt(0)}}
+          </div>
+          <div class="client-info">
+            <p class="client-name">{{getClientFullName(client)}}</p>
+            <p class="client-detail">
+              <span class="material-symbols-outlined">phone</span>
+              {{client.phone}}
+            </p>
+          </div>
+          <div class="client-stats">
+            <span class="visits">{{client.totalVisits}} visitas</span>
+            <span class="spent">{{formatCurrency(client.totalSpent)}}</span>
+          </div>
+        </div>
+        <div class="empty-message" *ngIf="recentClients.length === 0">
+          <span class="material-symbols-outlined">person_add</span>
+          <p>No hay clientes registrados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h3>Acciones Rápidas</h3>
+    <div class="actions-grid">
+      <a routerLink="/home/citas" class="action-card">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span>Nueva Cita</span>
       </a>
-  
+      <a routerLink="/home/clientes" class="action-card">
+        <span class="material-symbols-outlined">person_add</span>
+        <span>Nuevo Cliente</span>
+      </a>
+      <a routerLink="/home/servicios" class="action-card">
+        <span class="material-symbols-outlined">spa</span>
+        <span>Ver Servicios</span>
+      </a>
+      <a routerLink="/home/reportes" class="action-card">
+        <span class="material-symbols-outlined">assessment</span>
+        <span>Ver Reportes</span>
+      </a>
     </div>
   </div>

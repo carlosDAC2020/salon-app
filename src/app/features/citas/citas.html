@@ -1,26 +1,278 @@
-<div class="development-container">
-  <div class="content-wrapper">
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <span class="material-symbols-outlined">event</span>
+        Citas
+      </h1>
+      <p class="subtitle">Gestiona las citas y agenda del salón</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-symbols-outlined">add</span>
+      Nueva Cita
+    </button>
+  </div>
 
-    <!-- Icono representativo -->
-    <div class="icon-wrapper">
-      <span class="material-symbols-outlined">construction</span>
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input 
+        type="text" 
+        placeholder="Buscar citas..." 
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      >
     </div>
 
-    <!-- Título principal -->
-    <h2>Próximamente {{SectionName}}</h2>
+    <div class="filter-group">
+      <label>Estado:</label>
+      <select [(ngModel)]="filterStatus" (ngModelChange)="onStatusChange()">
+        <option value="all">Todos</option>
+        <option [value]="AppointmentStatus.PENDING">Pendiente</option>
+        <option [value]="AppointmentStatus.CONFIRMED">Confirmada</option>
+        <option [value]="AppointmentStatus.IN_PROGRESS">En Progreso</option>
+        <option [value]="AppointmentStatus.COMPLETED">Completada</option>
+        <option [value]="AppointmentStatus.CANCELLED">Cancelada</option>
+      </select>
+    </div>
 
-    <!-- Mensaje descriptivo -->
-    <p>
-      Estamos trabajando con esmero para construir esta sección y mejorar tu experiencia.
-      <br>
-      ¡Vuelve pronto para descubrir las novedades!
-    </p>
+    <div class="filter-group">
+      <label>Fecha:</label>
+      <input 
+        type="date" 
+        [(ngModel)]="filterDate" 
+        (ngModelChange)="onDateChange()"
+      >
+    </div>
 
-    <!-- Botón de acción (opcional pero recomendado) -->
-    <a href="/home/dashboard" class="btn-back">
-      <span class="material-symbols-outlined">arrow_back</span>
-      Volver al Dashboard
-    </a>
+    <div class="results-count">
+      <span>{{filteredAppointments.length}} citas</span>
+    </div>
+  </div>
 
+  <!-- Appointments List -->
+  <div class="appointments-list">
+    <div class="appointment-card" *ngFor="let appointment of filteredAppointments"
+         [class.today]="isToday(appointment.date)"
+         [class.past]="isPast(appointment.date)">
+      
+      <div class="card-left">
+        <div class="date-badge">
+          <div class="day">{{appointment.date | date:'dd'}}</div>
+          <div class="month">{{appointment.date | date:'MMM'}}</div>
+        </div>
+        <div class="time-info">
+          <span class="material-symbols-outlined">schedule</span>
+          <span class="time">{{appointment.startTime}} - {{appointment.endTime}}</span>
+        </div>
+      </div>
+
+      <div class="card-center">
+        <div class="appointment-details">
+          <div class="detail-row">
+            <span class="material-symbols-outlined">person</span>
+            <span class="label">Cliente:</span>
+            <span class="value">{{appointment.clientName}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="material-symbols-outlined">badge</span>
+            <span class="label">Empleado:</span>
+            <span class="value">{{appointment.employeeName}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="material-symbols-outlined">spa</span>
+            <span class="label">Servicio:</span>
+            <span class="value">{{appointment.serviceName}}</span>
+          </div>
+          <div class="detail-row" *ngIf="appointment.notes">
+            <span class="material-symbols-outlined">note</span>
+            <span class="label">Nota:</span>
+            <span class="value note">{{appointment.notes}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-right">
+        <div class="price">{{formatCurrency(appointment.price)}}</div>
+        
+        <div class="status-badge" 
+             [style.background-color]="getStatusInfo(appointment.status).color + '20'"
+             [style.color]="getStatusInfo(appointment.status).color">
+          <span class="material-symbols-outlined">{{getStatusInfo(appointment.status).icon}}</span>
+          <span>{{getStatusInfo(appointment.status).label}}</span>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-icon" (click)="openEditModal(appointment)" title="Editar">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          
+          <button class="btn-icon" 
+                  *ngIf="appointment.status === AppointmentStatus.PENDING"
+                  (click)="updateStatus(appointment.id, AppointmentStatus.CONFIRMED)" 
+                  title="Confirmar">
+            <span class="material-symbols-outlined">check_circle</span>
+          </button>
+          
+          <button class="btn-icon" 
+                  *ngIf="appointment.status === AppointmentStatus.CONFIRMED"
+                  (click)="updateStatus(appointment.id, AppointmentStatus.COMPLETED)" 
+                  title="Completar">
+            <span class="material-symbols-outlined">task_alt</span>
+          </button>
+          
+          <button class="btn-icon danger" (click)="deleteAppointment(appointment.id)" title="Eliminar">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredAppointments.length === 0">
+      <span class="material-symbols-outlined">event_busy</span>
+      <h3>No se encontraron citas</h3>
+      <p>Intenta ajustar los filtros o crea una nueva cita</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{isEditMode ? 'Editar Cita' : 'Nueva Cita'}}</h2>
+      <button class="btn-close" (click)="closeModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form class="modal-body" (ngSubmit)="saveAppointment()">
+      <!-- Información de la Cita -->
+      <div class="section-title">Información de la Cita</div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="clientId">Cliente *</label>
+          <select 
+            id="clientId" 
+            [(ngModel)]="currentAppointment.clientId" 
+            name="clientId"
+            required
+          >
+            <option value="">Seleccionar cliente</option>
+            <option *ngFor="let client of clients" [value]="client.id">
+              {{client.firstName}} {{client.lastName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="employeeId">Empleado *</label>
+          <select 
+            id="employeeId" 
+            [(ngModel)]="currentAppointment.employeeId" 
+            name="employeeId"
+            required
+          >
+            <option value="">Seleccionar empleado</option>
+            <option *ngFor="let employee of employees" [value]="employee.id">
+              {{employee.firstName}} {{employee.lastName}} - {{employee.position}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="serviceId">Servicio *</label>
+          <select 
+            id="serviceId" 
+            [(ngModel)]="currentAppointment.serviceId" 
+            name="serviceId"
+            required
+          >
+            <option value="">Seleccionar servicio</option>
+            <option *ngFor="let service of services" [value]="service.id">
+              {{service.name}} - {{formatCurrency(service.price)}} ({{service.duration}} min)
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div class="section-title">Fecha y Hora</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">Fecha *</label>
+          <input 
+            id="date" 
+            type="date" 
+            [(ngModel)]="currentAppointment.date" 
+            name="date"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="startTime">Hora de Inicio *</label>
+          <input 
+            id="startTime" 
+            type="time" 
+            [(ngModel)]="currentAppointment.startTime" 
+            name="startTime"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Estado y Notas -->
+      <div class="section-title">Detalles Adicionales</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="status">Estado *</label>
+          <select 
+            id="status" 
+            [(ngModel)]="currentAppointment.status" 
+            name="status"
+            required
+          >
+            <option [value]="AppointmentStatus.PENDING">Pendiente</option>
+            <option [value]="AppointmentStatus.CONFIRMED">Confirmada</option>
+            <option [value]="AppointmentStatus.IN_PROGRESS">En Progreso</option>
+            <option [value]="AppointmentStatus.COMPLETED">Completada</option>
+            <option [value]="AppointmentStatus.CANCELLED">Cancelada</option>
+            <option [value]="AppointmentStatus.NO_SHOW">No Asistió</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="notes">Notas</label>
+          <textarea 
+            id="notes" 
+            [(ngModel)]="currentAppointment.notes" 
+            name="notes"
+            rows="3"
+            placeholder="Observaciones, preferencias del cliente, etc."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">
+          <span class="material-symbols-outlined">save</span>
+          {{isEditMode ? 'Actualizar' : 'Crear'}} Cita
+        </button>
+      </div>
+    </form>
   </div>
 </div>
